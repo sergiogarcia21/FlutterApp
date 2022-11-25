@@ -1,0 +1,70 @@
+¿Qué pais es el que más kilómetros cuadrados tiene?
+Rusia
+China
+India
+Canadá
+1
+triviallogo
+¿Qué país es el que más metros de costa tiene?
+España
+Canadá
+Groenlandia
+Indonesia
+2
+triviallogo
+¿Qué país es el que tiene más habitantes?
+India
+Pakistan
+China
+EEUU
+3
+triviallogo
+¿Qué países tienen la frontera terrestre más larga?
+China/Rusia
+China/India
+Canadá/EEUU
+Mongolia/China
+3
+triviallogo
+¿Qué país tiene más kilómetros de carretera?
+EEUU
+Rusia
+Argentina
+China
+4
+triviallogo
+¿Qué país está metido dentro de otro país?
+Andorra
+San Marino
+Portugal
+Dinamarca
+2
+triviallogo
+¿Dónde se encuentra la isla artificial más grande?
+Países Bajos
+Dubai
+Reino Unido
+Canadá
+1
+triviallogo
+¿Donde se encuentra la Avenida más ancha del mundo?
+España
+Cuba
+Brasil
+Argentina
+4
+triviallogo
+¿Qué continente tiene más países?
+América
+Europa
+Asia
+África
+4
+triviallogo
+¿Qué país tiene más fronteras?
+Rusia
+Brasil
+Alemania
+Francia
+1
+triviallogo
