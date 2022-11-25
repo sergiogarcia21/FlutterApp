@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/questionController.dart';
+import 'dart:core';
+import 'dart:math';
+import 'dart:io';
+import 'package:path/path.dart' as p;
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  QuestionController qc = QuestionController();
+
 
   @override
   Widget build(BuildContext context) {
+    qc.initialize();
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -17,7 +25,8 @@ class MyApp extends StatelessWidget {
         initialRoute: '/mainMenuScreen',
         routes: {
           '/mainMenuScreen': (context) => MainMenu(),
-          '/questionsScreen': (context) => QuestionsScreen()
+          '/questionsScreen': (context) => QuestionsScreen(qc),
+          '/endGameScreen': (context) => EndGameScreen()
         });
   }
 }
@@ -59,6 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
 class MainMenu extends StatelessWidget {
   play(BuildContext context) {
     Navigator.pushNamed(context, '/questionsScreen');
+    final _questionController = QuestionController();
+    //_questionController.initialize();
   }
 
   @override
@@ -82,28 +93,65 @@ class MainMenu extends StatelessWidget {
   }
 }
 
-class QuestionsScreen extends StatefulWidget {
-  @override
-  State<QuestionsScreen> createState() => QuestionsScreenState();
-}
-
-class QuestionsScreenState extends State<QuestionsScreen> {
-  checkAnswer() {
-
-  }
+class EndGameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pantalla de preguntas'),
+        title: Text('End Game'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset('assets/triviallogo.png', width: 250, height: 250),
+            MainMenuButton(
+                Icons.exit_to_app_rounded, () => debugPrint("saidfhjauidfh")),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class QuestionsScreen extends StatefulWidget {
+  QuestionsScreen(this.questionController);
+  final QuestionController questionController;
+  Question preguntaActual = Question.empty();
+
+  void initializeQuestion(){
+    this.preguntaActual = questionController.getQuestion("flag");
+  }
+
+  @override
+  State<QuestionsScreen> createState() => QuestionsScreenState();
+}
+
+class QuestionsScreenState extends State<QuestionsScreen> {
+
+  void checkAnswer(correct_answer, click_answer){
+    if (correct_answer == click_answer){
+      print("ACIERTO");
+    }
+    else{
+      print("FALLO");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    widget.initializeQuestion();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Preguntas'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Text(
-              "¿Cuál es la capital de París?",
+              widget.preguntaActual.question,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline4,
             ),
@@ -113,18 +161,18 @@ class QuestionsScreenState extends State<QuestionsScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 TextButton(
-                    "África", 175, 100, () => checkAnswer()),
+                    widget.preguntaActual.answer1, 175, 100, () => checkAnswer(widget.preguntaActual.correctAnswer, 1)),
                 TextButton(
-                    "Albacete", 175, 100, () => checkAnswer()),
+                    widget.preguntaActual.answer2, 175, 100, () => checkAnswer(widget.preguntaActual.correctAnswer, 2)),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 TextButton(
-                    "Londres", 175, 100, () => checkAnswer()),
+                    widget.preguntaActual.answer3, 175, 100, () => checkAnswer(widget.preguntaActual.correctAnswer, 3)),
                 TextButton(
-                    "Leganés", 175, 100, () => checkAnswer()),
+                    widget.preguntaActual.answer4, 175, 100, () => checkAnswer(widget.preguntaActual.correctAnswer, 4)),
               ],
             ),
           ],
@@ -190,3 +238,35 @@ class TextButton extends StatelessWidget {
     );
   }
 }
+
+class ScoreController{
+  var score = 0;
+  var questionDone = 0;
+
+  int getScore(){
+    return score;
+  }
+
+  int getQuestion(){
+    return questionDone;
+  }
+
+  void incrementScore(){
+    score++;
+  }
+
+  void reset(){
+    score = 0;
+    questionDone = 0;
+  }
+
+  void newQuestion(){
+    questionDone++;
+  }
+}
+
+
+
+
+
+

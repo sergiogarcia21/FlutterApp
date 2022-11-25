@@ -1,0 +1,140 @@
+¿De que país es esta bandera? 
+Bulgaria
+Hungría
+Rusia
+Alemania
+2
+hungria
+¿De que país es esta bandera? 
+Andorra
+Angola
+Rumanía
+Moldavia
+4
+moldavia
+¿De que país es esta bandera? 
+Bélgica
+Alemania
+Francia
+Grecia
+1
+belgica
+¿De que país es esta bandera? 
+Perú
+Uruguay
+Cuba
+Puerto Rico
+1
+peru
+¿De que país es esta bandera? 
+Cuba
+Costa Rica
+Tailandia
+Francia
+3
+tailandia
+¿De que país es esta bandera? 
+Costa Rica
+Siria
+Emiratos Árabes Unidos
+Cuba
+4
+cuba
+¿De que país es esta bandera? 
+Angola
+Sudán
+Siria
+Eimratos Árabes Unidos
+2
+sudan
+¿A que continente pertenece el país con esta bandera?
+África
+Asia
+Europa
+América
+2
+siria
+¿A que continente pertenece el país con esta bandera?
+Europa
+Oceanía
+África
+Asia
+3
+libia
+¿A que continente pertenece el país con esta bandera?
+Europa
+África
+América
+Asia
+1
+italia
+¿A que continente pertenece el país con esta bandera?
+América
+Asia
+África
+Europa
+4
+alemania
+¿A que continente pertenece el país con esta bandera?
+África
+América
+Oceanía
+Asia
+3
+australia
+¿A que continente pertenece el país con esta bandera?
+América
+Oceanía
+Asia
+Europa
+1
+uruguay
+¿A que continente pertenece el país con esta bandera?
+Oceanía
+América
+África
+Asia
+2
+puerto_rico
+¿Cuál de las siguientes banderas tiene el color negro?
+Sudán
+Italia
+Rumanía
+Uruguay
+1
+triviallogo
+¿Cuál de las siguientes banderas tiene el color amarillo?
+Australia
+Moldavia
+Hungría
+Cuba
+2
+triviallogo
+¿Cuál de las siguientes banderas tiene el color rojo?
+Uruguay
+Grecia
+Israel
+Alemania
+4
+triviallogo
+¿Cuál de las siguientes banderas tiene el color azul?
+Italia
+Grecia
+Bélgica
+Perú
+2
+triviallogo
+¿Cuál de las siguientes banderas tiene el color verde?
+Argentina
+Andorra
+Bulgaria
+Rusia
+3
+triviallogo
+¿Cuál de las siguientes banderas tiene el color blanco?
+Bélgica
+Alemania
+Angola
+Grecia
+4
+triviallogo

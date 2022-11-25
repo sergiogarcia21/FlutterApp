@@ -3,6 +3,8 @@
 
 import 'dart:core';
 import 'dart:math';
+import 'dart:io';
+import 'package:path/path.dart' as p;
 
 class Question
 {
@@ -14,7 +16,7 @@ class Question
    var correctAnswer = -1;
    var drawable = "";
 
-   //Question() {}
+   Question.empty() {}
    Question(var question, var answer1, var answer2, var answer3, var answer4, var correctAnswer, var drawable){
       question = this.question;
       answer1 = this.answer1;
@@ -33,11 +35,24 @@ class QuestionController
    var context;
    var numRand = Random();
 
-   void initialize (context){
-      context = this.context;
+   void initialize() {
+      var question = "¿Cual es la capital de España?";
+      var answer1 = "Barcelona";
+      var answer2 = "Madrid";
+      var answer3 = "Sevilla";
+      var answer4 = "Asturias";
+      var correctAnswer = 2;
+      var drawable = "SLSAL";
+      var uno = Question(question, answer1, answer2, answer3, answer4, correctAnswer, drawable);
+      flagQuestions.add(uno);
+      print("HOLAA");
+   }
+
+   /*void initialize (){
+      //context = this.context;
       read("flagQuestions.txt", "flag");
       read("countryQuestions.txt", "country");
-   }
+   }*/
 
    void read(String fileName, String type)
    {
@@ -110,3 +125,4 @@ class QuestionController
    }
 
 }
+
