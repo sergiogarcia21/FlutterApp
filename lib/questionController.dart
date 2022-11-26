@@ -17,15 +17,7 @@ class Question
    var drawable = "";
 
    Question.empty() {}
-   Question(var question, var answer1, var answer2, var answer3, var answer4, var correctAnswer, var drawable){
-      question = this.question;
-      answer1 = this.answer1;
-      answer2 = this.answer2;
-      answer3 = this.answer3;
-      answer4 = this.answer4;
-      correctAnswer = this.correctAnswer;
-      drawable = this.drawable;
-   }
+   Question(this.question, this.answer1, this.answer2, this.answer3, this.answer4, this.correctAnswer, this.drawable){}
 }
 
 class QuestionController
@@ -35,7 +27,10 @@ class QuestionController
    var context;
    var numRand = Random();
 
-   void initialize() {
+   QuestionController() {}
+
+  void initialize() {
+      print("Init");
       var question = "¿Cual es la capital de España?";
       var answer1 = "Barcelona";
       var answer2 = "Madrid";
@@ -45,7 +40,16 @@ class QuestionController
       var drawable = "SLSAL";
       var uno = Question(question, answer1, answer2, answer3, answer4, correctAnswer, drawable);
       flagQuestions.add(uno);
-      print("HOLAA");
+
+      question = "¿De que país es esta bandera? ";
+      answer1 = "Bélgica";
+      answer2 = "Alemania";
+      answer3 = "Francia";
+      answer4 = "Grecia";
+      correctAnswer = 4;
+      drawable = "SLSAL";
+      var dos = Question(question, answer1, answer2, answer3, answer4, correctAnswer, drawable);
+      flagQuestions.add(dos);
    }
 
    /*void initialize (){

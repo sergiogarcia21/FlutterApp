@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/questionController.dart';
+import 'package:flutterapp/scoreController.dart';
 import 'dart:core';
 import 'dart:math';
 import 'dart:io';
@@ -11,8 +12,8 @@ void main() {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-  QuestionController qc = QuestionController();
-
+  final QuestionController qc = QuestionController();
+  final ScoreController sc = ScoreController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,51 +26,15 @@ class MyApp extends StatelessWidget {
         initialRoute: '/mainMenuScreen',
         routes: {
           '/mainMenuScreen': (context) => MainMenu(),
-          '/questionsScreen': (context) => QuestionsScreen(qc),
-          '/endGameScreen': (context) => EndGameScreen()
+          '/questionsScreen': (context) => QuestionsScreen(qc, sc),
+          '/endGameScreen': (context) => EndGameScreen(sc)
         });
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset('assets/triviallogo.png'),
-            //MainMenuButton(Icons.play_arrow_rounded),
-            //const MainMenuButton(Icons.exit_to_app_rounded),
-            Text(
-              '2',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
   }
 }
 
 class MainMenu extends StatelessWidget {
   play(BuildContext context) {
     Navigator.pushNamed(context, '/questionsScreen');
-    final _questionController = QuestionController();
-    //_questionController.initialize();
   }
 
   @override
@@ -77,6 +42,7 @@ class MainMenu extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Menu Principal'),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Column(
@@ -94,20 +60,66 @@ class MainMenu extends StatelessWidget {
 }
 
 class EndGameScreen extends StatelessWidget {
+  const EndGameScreen(this.scoreController);
+  final ScoreController scoreController;
+
+  String getPictureID() {
+    String id = "";
+
+    if (scoreController.getScore() < (scoreController.getQuestion() / 6)) {
+      id = 'assets/trivial0de6.png';
+    } else if (scoreController.getScore() <
+        2 * (scoreController.getQuestion() / 6)) {
+      id = 'assets/trivial1de6.png';
+    } else if (scoreController.getScore() <
+        3 * (scoreController.getQuestion() / 6)) {
+      id = 'assets/trivial2de6.png';
+    } else if (scoreController.getScore() <
+        4 * (scoreController.getQuestion() / 6)) {
+      id = 'assets/trivial3de6.png';
+    } else if (scoreController.getScore() <
+        5 * (scoreController.getQuestion() / 6)) {
+      id = 'assets/trivial4de6.png';
+    } else if (scoreController.getScore() < scoreController.getQuestion()) {
+      id = 'assets/trivial5de6.png';
+    } else {
+      id = 'assets/trivial2.png';
+    }
+
+    return id;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('End Game'),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset('assets/triviallogo.png', width: 250, height: 250),
+            Text(
+              "Fin de la partida",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            Text(
+              "Puntuación: " +
+                  scoreController.getScore().toString() +
+                  "/" +
+                  scoreController.getQuestion().toString(),
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            Image.asset(getPictureID(), width: 250, height: 250),
             MainMenuButton(
-                Icons.exit_to_app_rounded, () => debugPrint("saidfhjauidfh")),
+                Icons.exit_to_app_rounded,
+                () => {
+                      scoreController.reset(),
+                      Navigator.pushNamed(context, '/mainMenuScreen')
+                    }),
           ],
         ),
       ),
@@ -116,34 +128,51 @@ class EndGameScreen extends StatelessWidget {
 }
 
 class QuestionsScreen extends StatefulWidget {
-  QuestionsScreen(this.questionController);
+  QuestionsScreen(this.questionController, this.scoreController);
   final QuestionController questionController;
-  Question preguntaActual = Question.empty();
-
-  void initializeQuestion(){
-    this.preguntaActual = questionController.getQuestion("flag");
-  }
+  final ScoreController scoreController;
 
   @override
   State<QuestionsScreen> createState() => QuestionsScreenState();
 }
 
 class QuestionsScreenState extends State<QuestionsScreen> {
+  Question preguntaActual = Question.empty();
+  int numberOfQuizQuestions = 6;
 
-  void checkAnswer(correct_answer, click_answer){
-    if (correct_answer == click_answer){
+  void checkAnswer(correct_answer, click_answer) {
+    if (correct_answer == click_answer) {
+      widget.scoreController.incrementScore();
       print("ACIERTO");
-    }
-    else{
+    } else {
       print("FALLO");
+    }
+
+    widget.scoreController.newQuestion();
+
+    if (numberOfQuizQuestions == widget.scoreController.getQuestion()) {
+      Navigator.pushNamed(context, '/endGameScreen');
+    } else {
+      setState(() {
+        preguntaActual = widget.questionController.getQuestion("flag");
+
+
+        print(widget.scoreController.getQuestion());
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    widget.initializeQuestion();
+    preguntaActual = widget.questionController.getQuestion("flag");
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushNamed(context, '/mainMenuScreen');
+              widget.scoreController.reset();
+            }),
         title: Text('Preguntas'),
       ),
       body: Center(
@@ -151,28 +180,27 @@ class QuestionsScreenState extends State<QuestionsScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Text(
-              widget.preguntaActual.question,
+              preguntaActual.question,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline4,
             ),
-
             Image.asset('assets/triviallogo.png', width: 200, height: 200),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                TextButton(
-                    widget.preguntaActual.answer1, 175, 100, () => checkAnswer(widget.preguntaActual.correctAnswer, 1)),
-                TextButton(
-                    widget.preguntaActual.answer2, 175, 100, () => checkAnswer(widget.preguntaActual.correctAnswer, 2)),
+                TextButton(preguntaActual.answer1, 175, 100,
+                    () => checkAnswer(preguntaActual.correctAnswer, 1)),
+                TextButton(preguntaActual.answer2, 175, 100,
+                    () => checkAnswer(preguntaActual.correctAnswer, 2)),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                TextButton(
-                    widget.preguntaActual.answer3, 175, 100, () => checkAnswer(widget.preguntaActual.correctAnswer, 3)),
-                TextButton(
-                    widget.preguntaActual.answer4, 175, 100, () => checkAnswer(widget.preguntaActual.correctAnswer, 4)),
+                TextButton(preguntaActual.answer3, 175, 100,
+                    () => checkAnswer(preguntaActual.correctAnswer, 3)),
+                TextButton(preguntaActual.answer4, 175, 100,
+                    () => checkAnswer(preguntaActual.correctAnswer, 4)),
               ],
             ),
           ],
@@ -210,7 +238,8 @@ class MainMenuButton extends StatelessWidget {
 }
 
 class TextButton extends StatelessWidget {
-  const TextButton(this.text, this.width, this.height, this.onPressedButton, {super.key});
+  const TextButton(this.text, this.width, this.height, this.onPressedButton,
+      {super.key});
   final String text;
   final double width;
   final double height;
@@ -238,35 +267,3 @@ class TextButton extends StatelessWidget {
     );
   }
 }
-
-class ScoreController{
-  var score = 0;
-  var questionDone = 0;
-
-  int getScore(){
-    return score;
-  }
-
-  int getQuestion(){
-    return questionDone;
-  }
-
-  void incrementScore(){
-    score++;
-  }
-
-  void reset(){
-    score = 0;
-    questionDone = 0;
-  }
-
-  void newQuestion(){
-    questionDone++;
-  }
-}
-
-
-
-
-
-
