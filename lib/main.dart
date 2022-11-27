@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutterapp/questionController.dart';
 import 'package:flutterapp/scoreController.dart';
 import 'dart:core';
-import 'dart:math';
-import 'dart:io';
-import 'package:path/path.dart' as p;
+import 'package:audioplayers/audioplayers.dart';
+import 'package:vibration/vibration.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
   final QuestionController qc = QuestionController();
   final ScoreController sc = ScoreController();
+  final AudioCache ap = AudioCache();
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +26,17 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/mainMenuScreen',
         routes: {
-          '/mainMenuScreen': (context) => MainMenu(),
-          '/questionsScreen': (context) => QuestionsScreen(qc, sc),
-          '/endGameScreen': (context) => EndGameScreen(sc)
+          '/mainMenuScreen': (context) => MainMenu(ap),
+          '/questionsScreen': (context) => QuestionsScreen(qc, sc, ap),
+          '/endGameScreen': (context) => EndGameScreen(sc, ap)
         });
   }
 }
 
 class MainMenu extends StatelessWidget {
+  const MainMenu(this.audioPlayer);
+  final AudioCache audioPlayer;
+
   play(BuildContext context) {
     Navigator.pushNamed(context, '/questionsScreen');
   }
@@ -46,12 +50,18 @@ class MainMenu extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            Text(
+              "Country Vial",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 50),
+            ),
             Image.asset('assets/triviallogo.png', width: 250, height: 250),
-            MainMenuButton(Icons.play_arrow_rounded, () => play(context)),
-            MainMenuButton(
-                Icons.exit_to_app_rounded, () => debugPrint("saidfhjauidfh")),
+            MainMenuButton(Icons.play_arrow_rounded, () {
+              play(context);
+              audioPlayer.play('buttonClick.mp3');
+            }),
           ],
         ),
       ),
@@ -60,8 +70,9 @@ class MainMenu extends StatelessWidget {
 }
 
 class EndGameScreen extends StatelessWidget {
-  const EndGameScreen(this.scoreController);
+  const EndGameScreen(this.scoreController, this.audioPlayer);
   final ScoreController scoreController;
+  final AudioCache audioPlayer;
 
   String getPictureID() {
     String id = "";
@@ -114,12 +125,11 @@ class EndGameScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.headline4,
             ),
             Image.asset(getPictureID(), width: 250, height: 250),
-            MainMenuButton(
-                Icons.exit_to_app_rounded,
-                () => {
-                      scoreController.reset(),
-                      Navigator.pushNamed(context, '/mainMenuScreen')
-                    }),
+            MainMenuButton(Icons.exit_to_app_rounded, () {
+              audioPlayer.play('buttonClick.mp3');
+              scoreController.reset();
+              Navigator.pushNamed(context, '/mainMenuScreen');
+            }),
           ],
         ),
       ),
@@ -128,9 +138,11 @@ class EndGameScreen extends StatelessWidget {
 }
 
 class QuestionsScreen extends StatefulWidget {
-  QuestionsScreen(this.questionController, this.scoreController);
+  QuestionsScreen(
+      this.questionController, this.scoreController, this.audioPlayer);
   final QuestionController questionController;
   final ScoreController scoreController;
+  final AudioCache audioPlayer;
 
   @override
   State<QuestionsScreen> createState() => QuestionsScreenState();
@@ -139,12 +151,16 @@ class QuestionsScreen extends StatefulWidget {
 class QuestionsScreenState extends State<QuestionsScreen> {
   Question preguntaActual = Question.empty();
   int numberOfQuizQuestions = 6;
+  String j = 'siria.png';
 
   void checkAnswer(correct_answer, click_answer) {
     if (correct_answer == click_answer) {
       widget.scoreController.incrementScore();
       print("ACIERTO");
+      widget.audioPlayer.play('correctSound.mp3');
     } else {
+      widget.audioPlayer.play('wrongSound.mp3');
+      Vibration.vibrate(duration: 200);
       print("FALLO");
     }
 
@@ -154,22 +170,21 @@ class QuestionsScreenState extends State<QuestionsScreen> {
       Navigator.pushNamed(context, '/endGameScreen');
     } else {
       setState(() {
-        preguntaActual = widget.questionController.getQuestion("flag");
-
-
-        print(widget.scoreController.getQuestion());
+        preguntaActual = widget.questionController.getQuestion("country");
+        print(preguntaActual.drawable);
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    preguntaActual = widget.questionController.getQuestion("flag");
+    preguntaActual = widget.questionController.getQuestion("country");
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
+              widget.audioPlayer.play('buttonClick.mp3');
               Navigator.pushNamed(context, '/mainMenuScreen');
               widget.scoreController.reset();
             }),
@@ -185,23 +200,27 @@ class QuestionsScreenState extends State<QuestionsScreen> {
               style: Theme.of(context).textTheme.headline4,
             ),
             Image.asset('assets/triviallogo.png', width: 200, height: 200),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                TextButton(preguntaActual.answer1, 175, 100,
-                    () => checkAnswer(preguntaActual.correctAnswer, 1)),
-                TextButton(preguntaActual.answer2, 175, 100,
-                    () => checkAnswer(preguntaActual.correctAnswer, 2)),
-              ],
+            Flexible(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  TextButton(preguntaActual.answer1, 175, 100,
+                      () => checkAnswer(preguntaActual.correctAnswer, 1)),
+                  TextButton(preguntaActual.answer2, 175, 100,
+                      () => checkAnswer(preguntaActual.correctAnswer, 2)),
+                ],
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                TextButton(preguntaActual.answer3, 175, 100,
-                    () => checkAnswer(preguntaActual.correctAnswer, 3)),
-                TextButton(preguntaActual.answer4, 175, 100,
-                    () => checkAnswer(preguntaActual.correctAnswer, 4)),
-              ],
+            Flexible(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  TextButton(preguntaActual.answer3, 175, 100,
+                      () => checkAnswer(preguntaActual.correctAnswer, 3)),
+                  TextButton(preguntaActual.answer4, 175, 100,
+                      () => checkAnswer(preguntaActual.correctAnswer, 4)),
+                ],
+              ),
             ),
           ],
         ),
@@ -214,6 +233,7 @@ class MainMenuButton extends StatelessWidget {
   const MainMenuButton(this.icon, this.onPressedButton, {super.key});
   final IconData icon;
   final Function onPressedButton;
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -262,7 +282,7 @@ class TextButton extends StatelessWidget {
       },
       child: Text(
         text,
-        style: Theme.of(context).textTheme.headline4,
+        style: TextStyle(fontSize: 20),
       ),
     );
   }

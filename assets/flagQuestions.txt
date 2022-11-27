@@ -4,137 +4,137 @@ Hungría
 Rusia
 Alemania
 2
-hungria
+hungria.png
 ¿De que país es esta bandera? 
 Andorra
 Angola
 Rumanía
 Moldavia
 4
-moldavia
+moldavia.png
 ¿De que país es esta bandera? 
 Bélgica
 Alemania
 Francia
 Grecia
 1
-belgica
+belgica.png
 ¿De que país es esta bandera? 
 Perú
 Uruguay
 Cuba
 Puerto Rico
 1
-peru
+peru.png
 ¿De que país es esta bandera? 
 Cuba
 Costa Rica
 Tailandia
 Francia
 3
-tailandia
+tailandia.png
 ¿De que país es esta bandera? 
 Costa Rica
 Siria
 Emiratos Árabes Unidos
 Cuba
 4
-cuba
+cuba.png
 ¿De que país es esta bandera? 
 Angola
 Sudán
 Siria
 Eimratos Árabes Unidos
 2
-sudan
+sudan.png
 ¿A que continente pertenece el país con esta bandera?
 África
 Asia
 Europa
 América
 2
-siria
+siria.png
 ¿A que continente pertenece el país con esta bandera?
 Europa
 Oceanía
 África
 Asia
 3
-libia
+libia.png
 ¿A que continente pertenece el país con esta bandera?
 Europa
 África
 América
 Asia
 1
-italia
+italia.png
 ¿A que continente pertenece el país con esta bandera?
 América
 Asia
 África
 Europa
 4
-alemania
+alemania.png
 ¿A que continente pertenece el país con esta bandera?
 África
 América
 Oceanía
 Asia
 3
-australia
+australia.png
 ¿A que continente pertenece el país con esta bandera?
 América
 Oceanía
 Asia
 Europa
 1
-uruguay
+uruguay.png
 ¿A que continente pertenece el país con esta bandera?
 Oceanía
 América
 África
 Asia
 2
-puerto_rico
+puerto_rico.png
 ¿Cuál de las siguientes banderas tiene el color negro?
 Sudán
 Italia
 Rumanía
 Uruguay
 1
-triviallogo
+triviallogo.png
 ¿Cuál de las siguientes banderas tiene el color amarillo?
 Australia
 Moldavia
 Hungría
 Cuba
 2
-triviallogo
+triviallogo.png
 ¿Cuál de las siguientes banderas tiene el color rojo?
 Uruguay
 Grecia
 Israel
 Alemania
 4
-triviallogo
+triviallogo.png
 ¿Cuál de las siguientes banderas tiene el color azul?
 Italia
 Grecia
 Bélgica
 Perú
 2
-triviallogo
+triviallogo.png
 ¿Cuál de las siguientes banderas tiene el color verde?
 Argentina
 Andorra
 Bulgaria
 Rusia
 3
-triviallogo
+triviallogo.png
 ¿Cuál de las siguientes banderas tiene el color blanco?
 Bélgica
 Alemania
 Angola
 Grecia
 4
-triviallogo
+triviallogo.png
