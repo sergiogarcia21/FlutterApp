@@ -3,8 +3,8 @@
 
 import 'dart:core';
 import 'dart:math';
-import 'dart:io';
-import 'package:path/path.dart' as p;
+import 'package:flutter/services.dart';
+import 'package:path/path.dart';
 
 class Question
 {
@@ -31,25 +31,15 @@ class QuestionController
 
   void initialize() {
       print("Init");
-      var question = "¿Cual es la capital de España?";
-      var answer1 = "Barcelona";
-      var answer2 = "Madrid";
-      var answer3 = "Sevilla";
-      var answer4 = "Asturias";
-      var correctAnswer = 2;
-      var drawable = "SLSAL";
-      var uno = Question(question, answer1, answer2, answer3, answer4, correctAnswer, drawable);
-      flagQuestions.add(uno);
+      a();
+   }
 
-      question = "¿De que país es esta bandera? ";
-      answer1 = "Bélgica";
-      answer2 = "Alemania";
-      answer3 = "Francia";
-      answer4 = "Grecia";
-      correctAnswer = 4;
-      drawable = "SLSAL";
-      var dos = Question(question, answer1, answer2, answer3, answer4, correctAnswer, drawable);
-      flagQuestions.add(dos);
+   void a() async
+   {
+     String a = await rootBundle.loadString("assets/countryQuestions.txt");
+     List<String> lista;
+     lista = a.split('\n');
+     read(lista);
    }
 
    /*void initialize (){
@@ -58,7 +48,38 @@ class QuestionController
       read("countryQuestions.txt", "country");
    }*/
 
-   void read(String fileName, String type)
+   void read(List<String> data)
+   {
+     int i = 0;
+       var question = "";
+       var answer1 = "";
+       var answer2 = "";
+       var answer3 = "";
+       var answer4 = "";
+       var correctAnswer = -1;
+       var drawable = "";
+
+       do{
+         question = data[i];
+         i++;
+         answer1 = data[i];
+         i++;
+         answer2 = data[i];
+         i++;
+         answer3 = data[i];
+         i++;
+         answer4 = data[i];
+         i++;
+         correctAnswer = int.parse(data[i]);
+         i++;
+         drawable = data[i];
+         i++;
+         print(join(drawable));
+         addQuestion(Question(question, answer1, answer2, answer3, answer4, correctAnswer, drawable), 'country');
+       }while(i < data.length);
+   }
+
+   void reads(String fileName, String type)
    {
       try
       {
@@ -119,6 +140,7 @@ class QuestionController
       else if(type == "country")
       {
          var randomNumber = numRand.nextInt(countryQuestions.length);
+         print("dj");
          return countryQuestions[randomNumber];
       }
       else
