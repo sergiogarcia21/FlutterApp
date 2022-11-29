@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutterapp/questionController.dart';
-import 'package:flutterapp/scoreController.dart';
+import 'package:flutterapp/questionManager.dart';
+import 'package:flutterapp/scoreManager.dart';
 import 'dart:core';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:vibration/vibration.dart';
@@ -12,8 +12,8 @@ void main() {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-  final QuestionController qc = QuestionController();
-  final ScoreController sc = ScoreController();
+  final QuestionManager qc = QuestionManager();
+  final ScoreManager sc = ScoreManager();
   final AudioCache ap = AudioCache();
 
   @override
@@ -52,8 +52,8 @@ class MainMenu extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text(
-              "Country Vial",
+            const Text(
+              "Countrily",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 50),
             ),
@@ -71,7 +71,7 @@ class MainMenu extends StatelessWidget {
 
 class EndGameScreen extends StatelessWidget {
   const EndGameScreen(this.scoreController, this.audioPlayer);
-  final ScoreController scoreController;
+  final ScoreManager scoreController;
   final AudioCache audioPlayer;
 
   String getPictureID() {
@@ -140,8 +140,8 @@ class EndGameScreen extends StatelessWidget {
 class QuestionsScreen extends StatefulWidget {
   QuestionsScreen(
       this.questionController, this.scoreController, this.audioPlayer);
-  final QuestionController questionController;
-  final ScoreController scoreController;
+  final QuestionManager questionController;
+  final ScoreManager scoreController;
   final AudioCache audioPlayer;
 
   @override
@@ -151,7 +151,6 @@ class QuestionsScreen extends StatefulWidget {
 class QuestionsScreenState extends State<QuestionsScreen> {
   Question preguntaActual = Question.empty();
   int numberOfQuizQuestions = 6;
-  String j = 'siria.png';
 
   void checkAnswer(correct_answer, click_answer) {
     if (correct_answer == click_answer) {
@@ -170,15 +169,14 @@ class QuestionsScreenState extends State<QuestionsScreen> {
       Navigator.pushNamed(context, '/endGameScreen');
     } else {
       setState(() {
-        preguntaActual = widget.questionController.getQuestion("country");
-        print(preguntaActual.drawable);
+        preguntaActual = widget.questionController.getRandomQuestion();
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    preguntaActual = widget.questionController.getQuestion("country");
+    preguntaActual = widget.questionController.getRandomQuestion();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

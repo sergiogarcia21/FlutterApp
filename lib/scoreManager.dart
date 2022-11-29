@@ -1,4 +1,4 @@
-class ScoreController {
+class ScoreManager {
   var score = 0;
   var questionDone = 0;
 
